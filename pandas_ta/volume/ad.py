@@ -3,13 +3,14 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def ad(high, low, close, volume, open_=None, talib=None, offset=None, **kwargs):
+def ad(high, low, close, volume, open_=None, length=None, talib=None, offset=None, **kwargs):
     """Indicator: Accumulation/Distribution (AD)"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    volume = verify_series(volume)
+    length = int(length) if length and length > 0 else len(high)
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
+    volume = verify_series(volume, length)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 

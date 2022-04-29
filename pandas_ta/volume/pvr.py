@@ -4,11 +4,12 @@ from numpy import nan as npNaN
 from pandas import Series
 
 
-def pvr(close, volume):
+def pvr(close, volume, length=None):
     """ Indicator: Price Volume Rank"""
     # Validate arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
+    length = int(length) if length and length > 0 else len(close)
+    close = verify_series(close, length)
+    volume = verify_series(volume, length)
 
     # Calculate Result
     close_diff = close.diff().fillna(0)

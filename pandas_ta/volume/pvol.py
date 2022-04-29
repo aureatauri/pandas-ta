@@ -2,11 +2,12 @@
 from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
-def pvol(close, volume, offset=None, **kwargs):
+def pvol(close, volume, length=None, offset=None, **kwargs):
     """Indicator: Price-Volume (PVOL)"""
     # Validate arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
+    length = int(length) if length and length > 0 else len(close)
+    close = verify_series(close, length)
+    volume = verify_series(volume, length)
     offset = get_offset(offset)
     signed = kwargs.pop("signed", False)
 

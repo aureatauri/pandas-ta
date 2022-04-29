@@ -3,11 +3,12 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
-def obv(close, volume, talib=None, offset=None, **kwargs):
+def obv(close, volume, length=None, talib=None, offset=None, **kwargs):
     """Indicator: On Balance Volume (OBV)"""
     # Validate arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
+    length = int(length) if length and length > 0 else len(close)
+    close = verify_series(close, length)
+    volume = verify_series(volume, length)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 

@@ -3,11 +3,12 @@ from pandas_ta.momentum import roc
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def pvt(close, volume, drift=None, offset=None, **kwargs):
+def pvt(close, volume, drift=None, offset=None, length=None, **kwargs):
     """Indicator: Price-Volume Trend (PVT)"""
     # Validate arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
+    length = int(length) if length and length > 0 else len(close)
+    close = verify_series(close, length)
+    volume = verify_series(volume, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
 
