@@ -7,8 +7,8 @@ def pvt(close, volume, drift=None, offset=None, length=None, **kwargs):
     """Indicator: Price-Volume Trend (PVT)"""
     # Validate arguments
     length = int(length) if length and length > 0 else len(close)
-    close = verify_series(close, length)
-    volume = verify_series(volume, length)
+    close = verify_series(close, length).tail(length)
+    volume = verify_series(volume, length).tail(length)
     drift = get_drift(drift)
     offset = get_offset(offset)
 
@@ -27,7 +27,7 @@ def pvt(close, volume, drift=None, offset=None, length=None, **kwargs):
         pvt.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    pvt.name = f"PVT"
+    pvt.name = f"PVT_{length}"
     pvt.category = "volume"
 
     return pvt

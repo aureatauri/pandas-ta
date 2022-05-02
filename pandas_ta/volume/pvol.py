@@ -6,8 +6,8 @@ def pvol(close, volume, length=None, offset=None, **kwargs):
     """Indicator: Price-Volume (PVOL)"""
     # Validate arguments
     length = int(length) if length and length > 0 else len(close)
-    close = verify_series(close, length)
-    volume = verify_series(volume, length)
+    close = verify_series(close, length).tail(length)
+    volume = verify_series(volume, length).tail(length)
     offset = get_offset(offset)
     signed = kwargs.pop("signed", False)
 
@@ -27,7 +27,7 @@ def pvol(close, volume, length=None, offset=None, **kwargs):
         pvol.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    pvol.name = f"PVOL"
+    pvol.name = f"PVOL_{length}"
     pvol.category = "volume"
 
     return pvol

@@ -7,8 +7,8 @@ def obv(close, volume, length=None, talib=None, offset=None, **kwargs):
     """Indicator: On Balance Volume (OBV)"""
     # Validate arguments
     length = int(length) if length and length > 0 else len(close)
-    close = verify_series(close, length)
-    volume = verify_series(volume, length)
+    close = verify_series(close, length).tail(length)
+    volume = verify_series(volume, length).tail(length)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
@@ -31,7 +31,7 @@ def obv(close, volume, length=None, talib=None, offset=None, **kwargs):
         obv.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    obv.name = f"OBV"
+    obv.name = f"OBV_{length}"
     obv.category = "volume"
 
     return obv

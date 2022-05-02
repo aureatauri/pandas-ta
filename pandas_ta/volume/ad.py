@@ -7,10 +7,10 @@ def ad(high, low, close, volume, open_=None, length=None, talib=None, offset=Non
     """Indicator: Accumulation/Distribution (AD)"""
     # Validate Arguments
     length = int(length) if length and length > 0 else len(high)
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    volume = verify_series(volume, length)
+    high = verify_series(high, length).tail(length)
+    low = verify_series(low, length).tail(length)
+    close = verify_series(close, length).tail(length)
+    volume = verify_series(volume, length).tail(length)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
@@ -40,7 +40,7 @@ def ad(high, low, close, volume, open_=None, length=None, talib=None, offset=Non
         ad.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    ad.name = "AD" if open_ is None else "ADo"
+    ad.name = f"AD_{length}" if open_ is None else f"ADo_{length}"
     ad.category = "volume"
 
     return ad

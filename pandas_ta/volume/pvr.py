@@ -8,8 +8,8 @@ def pvr(close, volume, length=None):
     """ Indicator: Price Volume Rank"""
     # Validate arguments
     length = int(length) if length and length > 0 else len(close)
-    close = verify_series(close, length)
-    volume = verify_series(volume, length)
+    close = verify_series(close, length).tail(length)
+    volume = verify_series(volume, length).tail(length)
 
     # Calculate Result
     close_diff = close.diff().fillna(0)
@@ -21,7 +21,7 @@ def pvr(close, volume, length=None):
     pvr_.loc[(close_diff < 0) & (volume_diff < 0)]   = 4
 
     # Name and Categorize it
-    pvr_.name = f"PVR"
+    pvr_.name = f"PVR_{length}"
     pvr_.category = "volume"
 
     return pvr_
